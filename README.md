@@ -1,12 +1,12 @@
-# FashionStore 🛍️ - E-commerce Web Application
+# FashionStore 🛍 - E-commerce web application
 
-## 📖 Overview
-FashionStore is a full-stack e-commerce web application tailored for a modern clothing brand. Built on the robust Spring Boot framework, it seamlessly combines traditional server-side rendering (MVC) with modern real-time interactions and Artificial Intelligence to deliver a superior shopping and management experience.
+## Overview
+FashionStore is a full-stack e-commerce web application tailored for a modern clothing brand. Built on the robust Spring Boot framework, it seamlessly combines traditional server-side rendering (MVC) with modern real-time interactions and AI to deliver a superior shopping and management experience.
 
-## 💼 Business Logic & Features
+## Business logic and features
 
 ### 1. Customer portal (Web Interface)
-* **Product discovery:** Users can browse fashion items, filter by categories, and view detailed product descriptions.
+* **Product discovery:** Users can browse fashion items, filter by categories, search by keys and view detailed product descriptions.
 * **Shopping cart and checkout:** Seamless session management allowing users to safely add items to their cart and complete purchases.
 * **AI Style Assistant:** An integrated AI Chatbot that provides personalized outfit recommendations and answers customer inquiries instantly.
 
@@ -16,7 +16,7 @@ FashionStore is a full-stack e-commerce web application tailored for a modern cl
 * **Order tracking and real-time alerts:** Admins receive instant notification pulses when a new order is placed by a customer, powered by WebSockets (no page refresh required).
 * **Role-Based access control:** Strictly secured routes ensuring only users with `ROLE_ADMIN` can access the dashboard.
 
-## 🛠️ Tech Stack & Architecture
+## Tech stack and architecture
 
 * **Core Framework:** Java 17 / Spring Boot 3.3.x
 * **Frontend Engine:** Thymeleaf, HTML5, CSS3, Vanilla JavaScript
@@ -26,7 +26,7 @@ FashionStore is a full-stack e-commerce web application tailored for a modern cl
 * **Artificial Intelligence:** Spring AI (OpenAI integration)
 * **Project Structure:** `hcmute.edu.vn.fashionstore`
 
-## 🚀 Setup & Installation
+## Setup and installation
 
 **1. Prerequisites:**
 * Java Development Kit (JDK) 17 or higher.

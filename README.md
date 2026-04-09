@@ -5,16 +5,16 @@ FashionStore is a full-stack e-commerce web application tailored for a modern cl
 
 ## 💼 Business Logic & Features
 
-### 1. Customer Portal (Web Interface)
-* **Product Discovery:** Users can browse fashion items, filter by categories, and view detailed product descriptions.
-* **Shopping Cart & Checkout:** Seamless session management allowing users to safely add items to their cart and complete purchases.
+### 1. Customer portal (Web Interface)
+* **Product discovery:** Users can browse fashion items, filter by categories, and view detailed product descriptions.
+* **Shopping cart and checkout:** Seamless session management allowing users to safely add items to their cart and complete purchases.
 * **AI Style Assistant:** An integrated AI Chatbot that provides personalized outfit recommendations and answers customer inquiries instantly.
 
-### 2. Admin Dashboard (Management Interface)
-* **Sidebar Layout:** A classic, intuitive left-sidebar navigation layout for efficient workflow.
-* **Inventory Management:** Full CRUD (Create, Read, Update, Delete) operations for Categories and Fashion Products.
-* **Order Tracking & Real-time Alerts:** Admins receive instant notification pulses when a new order is placed by a customer, powered by WebSockets (no page refresh required).
-* **Role-Based Access Control:** Strictly secured routes ensuring only users with `ROLE_ADMIN` can access the dashboard.
+### 2. Admin portal (Management Interface)
+* **Sidebar layout:** A classic, intuitive left-sidebar navigation layout for efficient workflow.
+* **Inventory management:** Full CRUD (Create, Read, Update, Delete) operations for all object in the management system.
+* **Order tracking and real-time alerts:** Admins receive instant notification pulses when a new order is placed by a customer, powered by WebSockets (no page refresh required).
+* **Role-Based access control:** Strictly secured routes ensuring only users with `ROLE_ADMIN` can access the dashboard.
 
 ## 🛠️ Tech Stack & Architecture
 

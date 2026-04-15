@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: main-layout(title='Quản lý sản phẩm', content=~{:: #main-content})}">
+<body>
+<div id="main-content" class="p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Danh sách sản phẩm</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+            <i class="bx bx-plus"></i> Thêm sản phẩm
+        </button>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá (VNĐ)</th>
+                    <th>Tồn kho</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.productId}">1</td>
+                    <td th:text="${product.name}">Tên mẫu</td>
+                    <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">150,000</td>
+                    <td th:text="${product.stock}">100</td>
+                    <td>
+                        <span th:if="${product.isActive}" class="badge bg-success">Đang bán</span>
+                        <span th:unless="${product.isActive}" class="badge bg-danger">Ngừng bán</span>
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
+                        <a href="#" class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Thêm Sản Phẩm Mới</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addProductForm">
+                    <div class="mb-3">
+                        <label class="form-label">Tên sản phẩm *</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Giá (VNĐ) *</label>
+                            <input type="number" class="form-control" name="price" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tồn kho *</label>
+                            <input type="number" class="form-control" name="stock" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Link Ảnh (Tạm thời nhập text)</label>
+                        <input type="text" class="form-control" name="imgUrl">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" name="isActive">
+                            <option value="true">Đang bán</option>
+                            <option value="false">Ngừng bán</option>
+                        </select>
+                    </div>
+                    <div class="text-end mt-4">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('addProductForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Chặn hành vi load lại trang mặc định của Form
+
+        // 1. Thu thập dữ liệu từ Form
+        const formData = new FormData(this);
+        const productData = Object.fromEntries(formData.entries());
+
+        // Ép kiểu cho đúng định dạng Java Entity mong muốn
+        productData.price = parseFloat(productData.price);
+        productData.stock = parseInt(productData.stock);
+        productData.isActive = productData.isActive === 'true';
+
+        // 2. Gửi dữ liệu xuống Backend bằng Fetch API
+        fetch('/api/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(productData) // Biến object JS thành chuỗi JSON
+        })
+            .then(response => {
+                if(response.ok) {
+                    alert("Thêm sản phẩm thành công!");
+                    window.location.reload(); // F5 lại trang để hiện data mới
+                } else {
+                    alert("Có lỗi xảy ra khi lưu sản phẩm.");
+                }
+            })
+            .catch(error => console.error('Lỗi:', error));
+    });
+</script>
+</div>
+</body>
+</html>

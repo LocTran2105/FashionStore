@@ -1,0 +1,98 @@
+<div th:fragment="sidebar">
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <i class="bx bx-sparkles-alt"></i>
+                <div class="logo_name">Tran Huu Loc</div>
+            </div>
+            <i class="bx bx-menu" id="btn"></i>
+        </div>
+        <ul class="nav_list">
+            <li>
+                <a th:href="@{/admin}">
+                    <i class="bx bx-chart-line"></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+                <span class="tool_tip">Dashboard</span>
+            </li>
+
+            <li>
+                    <i class="bx bx-receipt"></i>
+                    <span class="link_name">Receipt</span>
+                </a>
+                <span class="tool_tip">Receipt</span>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bx bx-categories"></i>
+                    <span class="link_name">Category</span>
+                </a>
+                <span class="tool_tip">Category</span>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bx bx-registered"></i>
+                    <span class="link_name">Brand</span>
+                </a>
+                <span class="tool_tip">Brand</span>
+            </li>
+
+            <li>
+                <a th:href="@{/admin/products}">
+                    <i class="bx bx-t-shirt"></i>
+                    <span class="link_name">Product</span>
+                </a>
+                <span class="tool_tip">Product</span>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bx bx-letter-spacing"></i>
+                    <span class="link_name">Product varient</span>
+                </a>
+                <span class="tool_tip">Product varient</span>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bx bx-discount"></i>
+                    <span class="link_name">Discount</span>
+                </a>
+                <span class="tool_tip">Discount</span>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bx bx-clipboard-detail" ></i>
+                    <span class="link_name">Diary</span>
+                </a>
+                <span class="tool_tip">Diary</span>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bx bx-cog"></i>
+                    <span class="link_name">Setting</span>
+                </a>
+                <span class="tool_tip">Setting</span>
+            </li>
+
+            <li>
+                <a href="#">
+                    <i class="bx bx-arrow-out-right-square-half"></i>
+                    <span class="link_name">Log out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        let btn = document.querySelector("#btn");
+        let sidebar = document.querySelector(".sidebar");
+        btn.onclick = function(){
+            sidebar.classList.toggle("active");
+        }
+    </script>
+</div>

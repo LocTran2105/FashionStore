@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lobster&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+ul{
+    list-style: none;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins";
+}
+
+body{
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 240px;
+    background-color: lightskyblue;
+    transition: all 0.5s ease;
+}
+
+.sidebar .logo_content .logo{
+    color: white;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    opacity: 1;
+    pointer-events: none;
+}
+
+.logo_content .logo i{
+    font-size: 25px;
+    margin-right: 5px;
+}
+
+.logo_content .logo .logo_name{
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.sidebar #btn{
+    color: #fff;
+    position: absolute;
+    left: 90%;
+    top: 0px;
+    font-size: 20px;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    align-items: center;
+    transform: translateX(-50%);
+}
+
+.sidebar ul{
+    margin-top: 20px;
+}
+
+.sidebar ul li{
+    position: relative;
+    height: 50px;
+    width: 100%;
+    list-style: none;
+    line-height: 50px;
+}
+
+.sidebar ul li .tool_tip{
+    position: absolute;
+    height: 35px;
+    width: 200px;
+    background: #fff;
+    top: 0;
+    left: 122px;
+    transform: translateY(-50%);
+    border-radius: 6px;
+    line-height: 35px;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transition: 0s;
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+}
+
+.sidebar ul li:hover .tool_tip{
+    top: 50%;
+    transition: all 0.5s ease;
+    opacity: 1;
+}
+.sidebar ul li a{
+    color: white;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.1s ease;
+    border-radius: 12px;
+    white-space: nowrap;
+    margin-right: 50px;
+}
+
+
+.sidebar ul li a:hover{
+    background: white;
+    color: black;
+}
+
+.sidebar ul li a i{
+    height: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+    text-align: center;
+    margin-right: 15px;
+}
+
+
+.sidebar .link_name{
+    opacity: 1;
+    pointer-events: none;
+}
+
+/* Thiết lập cho phần nội dung chính không bị đè */
+.home-content {
+    /* Đẩy toàn bộ nội dung sang phải một khoảng bằng đúng chiều rộng của Sidebar */
+    /* Lưu ý: Nếu sidebar của bạn rộng 250px thì sửa số 240px thành 250px nhé */
+    margin-left: 240px;
+
+    /* Trừ đi chiều rộng của sidebar để bảng không bị tràn ra ngoài màn hình bên phải */
+    width: calc(100% - 240px);
+
+    /* Hiệu ứng chuyển động mượt mà */
+    transition: all 0.5s ease;
+}
+
+/* NẾU MÃ JAVASCRIPT CỦA BẠN CÓ CHỨC NĂNG BẤM NÚT ĐỂ THU NHỎ SIDEBAR (class active) */
+.sidebar.active ~ .home-content {
+    /* Khi sidebar thu nhỏ (thường còn khoảng 78px), ta đẩy khung nội dung dịch lại sang trái */
+    margin-left: 78px;
+    width: calc(100% - 78px);
+}

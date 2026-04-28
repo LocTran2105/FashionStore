@@ -176,3 +176,39 @@ CREATE INDEX idx_order_created_at ON Orders(created_at);
 
 -- Tăng tốc load lịch sử tin nhắn trong một phiên chat
 CREATE INDEX idx_messages_created_at ON Messages(created_at);
+-- 1. Thêm dữ liệu tài khoản (mật khẩu mặc định là: 123456 đã được mã hóa BCrypt)
+INSERT INTO Users (username, password, email, phone, address, role) VALUES
+('admin_loc', '$2a$10$wE/.7.5x5R1f.K8/9z4D1.aLw.y/Q0Z.Z/9z4D1.aLw.y/Q0Z', 'admin@gmail.com', '0901234567', 'hồ chí minh', 'ADMIN'),
+('khachhang1', '$2a$10$wE/.7.5x5R1f.K8/9z4D1.aLw.y/Q0Z.Z/9z4D1.aLw.y/Q0Z', 'khachhang@gmail.com', '0987654321', 'hà nội', 'CUSTOMER');
+
+-- 2. Thêm dữ liệu danh mục (Categories)
+INSERT INTO Categories (name, description) VALUES
+('áo thun', 'các loại áo thun cotton thoáng mát'),
+('quần jean', 'quần jean nam nữ phong cách trẻ trung'),
+('áo khoác', 'áo khoác mùa đông và áo gió');
+
+-- 3. Thêm dữ liệu thương hiệu (Brands)
+INSERT INTO Brands (name, description) VALUES
+('local brand việt', 'thương hiệu thời trang sản xuất tại việt nam'),
+('thời trang basic', 'phong cách tối giản, dễ phối đồ'),
+('thể thao năng động', 'trang phục thể thao thoải mái');
+
+-- 4. Thêm dữ liệu sản phẩm (Products)
+INSERT INTO Products (name, cat_id, brand_id, img_url, description, price, stock) VALUES
+('áo thun cổ tròn trơn', 1, 2, 'ao-thun-tron.jpg', 'áo thun 100% cotton thấm hút tốt', 150000.00, 100),
+('quần jean dáng suông ống rộng', 2, 1, 'quan-jean-suong.jpg', 'quần bò xanh nhạt hot trend', 350000.00, 50),
+('áo khoác dù chống nước nhẹ', 3, 3, 'ao-khoac-du.jpg', 'áo khoác 2 lớp thích hợp đi mưa nhẹ', 250000.00, 80);
+
+-- 5. Thêm dữ liệu biến thể (ProductVariants - Size/Màu sắc)
+INSERT INTO ProductVariants (product_id, size, color, stock) VALUES
+(1, 's', 'trắng', 30),
+(1, 'm', 'trắng', 40),
+(1, 'l', 'đen', 30),
+(2, '30', 'xanh dương', 25),
+(2, '32', 'xanh dương', 25),
+(3, 'l', 'xám', 80);
+
+-- 6. Thêm dữ liệu mã giảm giá (Discounts)
+INSERT INTO Discounts (name, description, stock, start_time, end_time, percent) VALUES
+('mùa hè rực rỡ', 'giảm 10% đón hè', 100, '2026-04-01 00:00:00', '2026-05-31 23:59:59', 10),
+('khách hàng mới', 'giảm 20% cho đơn đầu tiên', 500, '2026-01-01 00:00:00', '2026-12-31 23:59:59', 20);

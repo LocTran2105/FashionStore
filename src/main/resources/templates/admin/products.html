@@ -3,6 +3,22 @@
       th:replace="~{admin/layout :: main-layout(title='Quản lý sản phẩm', content=~{:: #main-content})}">
 <body>
 <div id="main-content" class="p-4">
+    <form th:action="@{/admin/products}" method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="Tìm tên sản phẩm...">
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" name="isActive">
+                <option value="">Tất cả trạng thái</option>
+                <option value="true" th:selected="${isActive == true}">Đang bán</option>
+                <option value="false" th:selected="${isActive == false}">Ngừng bán</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-secondary w-100"><i class="bx bx-search"></i> Lọc dữ liệu</button>
+        </div>
+    </form>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Danh sách sản phẩm</h2>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
@@ -28,14 +44,27 @@
                     <td th:text="${product.productId}">1</td>
                     <td th:text="${product.name}">Tên mẫu</td>
                     <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">150,000</td>
-                    <td th:text="${product.stock}">100</td>
+
+                    <td class="text-muted">Chưa nhập biến thể</td>
+
                     <td>
                         <span th:if="${product.isActive}" class="badge bg-success">Đang bán</span>
                         <span th:unless="${product.isActive}" class="badge bg-danger">Ngừng bán</span>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
-                        <a href="#" class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
+                        <button class="btn btn-sm btn-warning"
+                                th:data-id="${product.productId}"
+                                th:data-name="${product.name}"
+                                th:data-price="${product.price}"
+                                th:data-imgurl="${product.imgUrl}"
+                                th:data-isactive="${product.isActive}"
+                                onclick="openEditModal(this)">
+                            <i class="bx bx-edit"></i>
+                        </button>
+
+                        <button class="btn btn-sm btn-danger" th:onclick="'deleteProduct(' + ${product.productId} + ')'">
+                            <i class="bx bx-trash"></i>
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -43,82 +72,201 @@
         </div>
     </div>
 
-<div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Thêm Sản Phẩm Mới</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addProductForm">
-                    <div class="mb-3">
-                        <label class="form-label">Tên sản phẩm *</label>
-                        <input type="text" class="form-control" name="name" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Thêm Sản Phẩm Mới</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm">
+                        <div class="mb-3">
+                            <label class="form-label">Tên sản phẩm *</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Giá (VNĐ) *</label>
                             <input type="number" class="form-control" name="price" required>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tồn kho *</label>
-                            <input type="number" class="form-control" name="stock" required>
+                        <div class="mb-3">
+                            <label class="form-label">Link Ảnh (Tạm thời nhập text)</label>
+                            <input type="text" class="form-control" name="imgUrl">
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Link Ảnh (Tạm thời nhập text)</label>
-                        <input type="text" class="form-control" name="imgUrl">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Trạng thái</label>
-                        <select class="form-select" name="isActive">
-                            <option value="true">Đang bán</option>
-                            <option value="false">Ngừng bán</option>
-                        </select>
-                    </div>
-                    <div class="text-end mt-4">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
-                    </div>
-                </form>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <select class="form-select" name="isActive">
+                                <option value="true">Đang bán</option>
+                                <option value="false">Ngừng bán</option>
+                            </select>
+                        </div>
+                        <div class="text-end mt-4">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    document.getElementById('addProductForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // Chặn hành vi load lại trang mặc định của Form
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">Cập Nhật Sản Phẩm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm">
+                        <input type="hidden" id="editId">
 
-        // 1. Thu thập dữ liệu từ Form
-        const formData = new FormData(this);
-        const productData = Object.fromEntries(formData.entries());
+                        <div class="mb-3">
+                            <label class="form-label">Tên sản phẩm *</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Giá (VNĐ) *</label>
+                            <input type="number" class="form-control" id="editPrice" name="price" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Link Ảnh</label>
+                            <input type="text" class="form-control" id="editImgUrl" name="imgUrl">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <select class="form-select" id="editIsActive" name="isActive">
+                                <option value="true">Đang bán</option>
+                                <option value="false">Ngừng bán</option>
+                            </select>
+                        </div>
+                        <div class="text-end mt-4">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-warning">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Ép kiểu cho đúng định dạng Java Entity mong muốn
-        productData.price = parseFloat(productData.price);
-        productData.stock = parseInt(productData.stock);
-        productData.isActive = productData.isActive === 'true';
+    <script>
+        // --- CHỨC NĂNG THÊM ---
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const productData = Object.fromEntries(formData.entries());
 
-        // 2. Gửi dữ liệu xuống Backend bằng Fetch API
-        fetch('/api/products', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(productData) // Biến object JS thành chuỗi JSON
-        })
-            .then(response => {
-                if(response.ok) {
-                    alert("Thêm sản phẩm thành công!");
-                    window.location.reload(); // F5 lại trang để hiện data mới
-                } else {
-                    alert("Có lỗi xảy ra khi lưu sản phẩm.");
-                }
+            // SỬA LỖI 3: Chỉ parse price và isActive, bỏ parse stock
+            productData.price = parseFloat(productData.price);
+            productData.isActive = productData.isActive === 'true';
+
+            fetch('/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(productData)
             })
-            .catch(error => console.error('Lỗi:', error));
-    });
-</script>
+                .then(response => {
+                    if(response.ok) {
+                        alert("Thêm sản phẩm thành công!");
+                        window.location.reload();
+                    } else {
+                        alert("Có lỗi xảy ra khi lưu sản phẩm.");
+                    }
+                })
+                .catch(error => console.error('Lỗi:', error));
+        });
+
+        // --- CHỨC NĂNG XÓA ---
+        // --- CHỨC NĂNG XÓA BẰNG SWEETALERT2 ---
+        function deleteProduct(id) {
+            Swal.fire({
+                title: 'Bạn có chắc chắn?',
+                text: "Dữ liệu sẽ không thể khôi phục!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Đồng ý xóa!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Gọi API nếu người dùng ấn Đồng ý
+                    fetch('/api/products/' + id, { method: 'DELETE' })
+                        .then(response => {
+                            if(response.ok) {
+                                Swal.fire('Đã xóa!', 'Sản phẩm đã bị xóa.', 'success')
+                                    .then(() => window.location.reload());
+                            } else {
+                                Swal.fire('Lỗi!', 'Không thể xóa sản phẩm.', 'error');
+                            }
+                        });
+                }
+            });
+        }
+
+        // --- CHỨC NĂNG SỬA (Hiển thị dữ liệu lên form) ---
+        // SỬA LỖI 4: Đã xóa dòng khởi tạo editModal bị dư thừa ở ngoài function
+
+        function openEditModal(button) {
+            document.getElementById('editId').value = button.getAttribute('data-id');
+            document.getElementById('editName').value = button.getAttribute('data-name');
+            document.getElementById('editPrice').value = button.getAttribute('data-price');
+            document.getElementById('editImgUrl').value = button.getAttribute('data-imgurl') || '';
+            document.getElementById('editIsActive').value = button.getAttribute('data-isactive');
+
+            let editModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('editProductModal'));
+            editModal.show();
+        }
+
+        // --- CHỨC NĂNG SỬA (Gửi dữ liệu cập nhật xuống Backend) ---
+        document.getElementById('editProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editId').value;
+            const formData = new FormData(this);
+            const productData = Object.fromEntries(formData.entries());
+
+            productData.price = parseFloat(productData.price);
+            productData.isActive = productData.isActive === 'true';
+
+            fetch('/api/products/' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(productData)
+            })
+                .then(response => {
+                    if(response.ok) {
+                        alert("Cập nhật thành công!");
+                        window.location.reload();
+                    } else {
+                        alert("Có lỗi xảy ra khi cập nhật.");
+                    }
+                })
+                .catch(error => console.error('Lỗi:', error));
+        });
+    </script>
+    <nav th:if="${totalPages > 1}" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/admin/products(page=${currentPage - 1}, keyword=${keyword}, isActive=${isActive})}">Trước</a>
+            </li>
+
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${currentPage == i ? 'active' : ''}">
+                <a class="page-link" th:text="${i + 1}"
+                   th:href="@{/admin/products(page=${i}, keyword=${keyword}, isActive=${isActive})}"></a>
+            </li>
+
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/admin/products(page=${currentPage + 1}, keyword=${keyword}, isActive=${isActive})}">Sau</a>
+            </li>
+        </ul>
+    </nav>
 </div>
 </body>
 </html>

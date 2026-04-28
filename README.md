@@ -26,6 +26,34 @@ FashionStore is a full-stack e-commerce web application tailored for a modern cl
 * **Artificial Intelligence:** Spring AI (OpenAI integration)
 * **Project Structure:** `hcmute.edu.vn.fashionstore`
 
+## Architecture & Technology Stack
+
+| Layer / Technology            | Usage                       | Purpose                                                     |
+| ----------------------------- | --------------------------- | ----------------------------------------------------------- |
+| Spring Boot                   | Backend Framework           | Main backend application framework                          |
+| Spring MVC                    | MVC Architecture            | Handle request routing and controller logic                 |
+| Spring Data JPA               | Data Access Layer           | Database interaction using repositories                     |
+| Hibernate                     | ORM                         | Map Java objects to MySQL tables                            |
+| MySQL                         | Database                    | Store application data                                      |
+| Thymeleaf                     | Server-Side Rendering (SSR) | Render dynamic HTML pages on the server                     |
+| HTML5                         | Frontend Structure          | Build web page structure                                    |
+| CSS3                          | UI Styling                  | Style the application interface                             |
+| Bootstrap 5                   | Responsive UI Framework     | Build responsive admin dashboard UI                         |
+| JavaScript                    | Frontend Logic              | Handle client-side interactions                             |
+| Fetch API                     | AJAX / Async Requests       | Call REST APIs without page reload                          |
+| REST API                      | Backend Communication       | CRUD operations using JSON                                  |
+| JSON                          | Data Exchange Format        | Exchange data between frontend and backend                  |
+| Maven                         | Build Tool                  | Dependency management and project build                     |
+| JPA Entity                    | Database Mapping            | Represent database tables as Java classes                   |
+| Repository Pattern            | Data Layer Pattern          | Separate database logic from business logic                 |
+| Service Layer                 | Business Logic Layer        | Handle application rules and processing                     |
+| DTO Pattern                   | Data Transfer               | Transfer request/response data safely                       |
+| Pagination                    | Data Management             | Split large product lists into pages                        |
+| Search & Filter               | Product Management          | Search products and filter by status                        |
+| SweetAlert2                   | User Interaction UI         | Display modern confirmation dialogs                         |
+| Hybrid SSR + CSR Architecture | Web Architecture            | Combine server-rendered pages with dynamic API interactions |
+
+
 ## Setup and installation
 
 **1. Prerequisites:**

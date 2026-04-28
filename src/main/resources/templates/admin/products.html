@@ -3,26 +3,22 @@
       th:replace="~{admin/layout :: main-layout(title='Quản lý sản phẩm', content=~{:: #main-content})}">
 <body>
 <div id="main-content" class="p-4">
-    <form th:action="@{/admin/products}" method="get" class="row g-3 mb-4">
-        <div class="col-md-4">
-            <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="Tìm tên sản phẩm...">
-        </div>
-        <div class="col-md-3">
-            <select class="form-select" name="isActive">
+
+    <h2 class="mb-3">Danh sách sản phẩm</h2>
+
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+        <form th:action="@{/admin/products}" method="get" class="d-flex gap-2 mb-0">
+            <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="Tìm tên sản phẩm..." style="min-width: 250px;">
+            <select class="form-select" name="isActive" style="width: auto; min-width: 160px;">
                 <option value="">Tất cả trạng thái</option>
                 <option value="true" th:selected="${isActive == true}">Đang bán</option>
                 <option value="false" th:selected="${isActive == false}">Ngừng bán</option>
             </select>
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-secondary w-100"><i class="bx bx-search"></i> Lọc dữ liệu</button>
-        </div>
-    </form>
+            <button type="submit" class="btn btn-secondary text-nowrap"><i class="bx bx-search"></i> Lọc</button>
+        </form>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Danh sách sản phẩm</h2>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
-            <i class="bx bx-plus"></i> Thêm sản phẩm
+        <button type="button" class="btn btn-primary text-nowrap" data-bs-toggle="modal" data-bs-target="#addProductModal">
+            <i class="bx bx-plus"></i> Thêm mới
         </button>
     </div>
 
@@ -151,36 +147,38 @@
     </div>
 
     <script>
-        // --- CHỨC NĂNG THÊM ---
+        // --- CHỨC NĂNG THÊM (Đã dùng SweetAlert2) ---
         document.getElementById('addProductForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const formData = new FormData(this);
             const productData = Object.fromEntries(formData.entries());
 
-            // SỬA LỖI 3: Chỉ parse price và isActive, bỏ parse stock
             productData.price = parseFloat(productData.price);
             productData.isActive = productData.isActive === 'true';
 
             fetch('/api/products', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(productData)
             })
                 .then(response => {
                     if(response.ok) {
-                        alert("Thêm sản phẩm thành công!");
-                        window.location.reload();
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: 'Đã thêm sản phẩm mới.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.reload();
+                        });
                     } else {
-                        alert("Có lỗi xảy ra khi lưu sản phẩm.");
+                        Swal.fire('Thất bại!', 'Có lỗi xảy ra khi lưu sản phẩm.', 'error');
                     }
                 })
                 .catch(error => console.error('Lỗi:', error));
         });
 
         // --- CHỨC NĂNG XÓA ---
-        // --- CHỨC NĂNG XÓA BẰNG SWEETALERT2 ---
         function deleteProduct(id) {
             Swal.fire({
                 title: 'Bạn có chắc chắn?',
@@ -193,7 +191,6 @@
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Gọi API nếu người dùng ấn Đồng ý
                     fetch('/api/products/' + id, { method: 'DELETE' })
                         .then(response => {
                             if(response.ok) {
@@ -208,8 +205,6 @@
         }
 
         // --- CHỨC NĂNG SỬA (Hiển thị dữ liệu lên form) ---
-        // SỬA LỖI 4: Đã xóa dòng khởi tạo editModal bị dư thừa ở ngoài function
-
         function openEditModal(button) {
             document.getElementById('editId').value = button.getAttribute('data-id');
             document.getElementById('editName').value = button.getAttribute('data-name');
@@ -221,10 +216,9 @@
             editModal.show();
         }
 
-        // --- CHỨC NĂNG SỬA (Gửi dữ liệu cập nhật xuống Backend) ---
+        // --- CHỨC NĂNG SỬA (Gửi dữ liệu và dùng SweetAlert2) ---
         document.getElementById('editProductForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
             const id = document.getElementById('editId').value;
             const formData = new FormData(this);
             const productData = Object.fromEntries(formData.entries());
@@ -234,22 +228,27 @@
 
             fetch('/api/products/' + id, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(productData)
             })
                 .then(response => {
                     if(response.ok) {
-                        alert("Cập nhật thành công!");
-                        window.location.reload();
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: 'Cập nhật sản phẩm thành công.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.reload();
+                        });
                     } else {
-                        alert("Có lỗi xảy ra khi cập nhật.");
+                        Swal.fire('Thất bại!', 'Có lỗi xảy ra khi cập nhật.', 'error');
                     }
                 })
                 .catch(error => console.error('Lỗi:', error));
         });
     </script>
+
     <nav th:if="${totalPages > 1}" class="mt-4">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
